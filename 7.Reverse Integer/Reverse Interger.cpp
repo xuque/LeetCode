@@ -1,7 +1,8 @@
 class Solution {
 public:
 	int reverse(int x) {
-	    long result = 0;
+	    int result = 0;
+	    int overflow = pow(2,31) / 10;
 	    bool negative = false;
 		std::queue<int>Queue;
 		if (x < 0) {
@@ -18,6 +19,9 @@ public:
 		}
 		int len = Queue.size();
 		for (int i = 0; i < len; ++i) {
+            if(result > overflow){
+                return 0;
+            }
 			result = result * 10 + Queue.front();
 			Queue.pop();
 		}
