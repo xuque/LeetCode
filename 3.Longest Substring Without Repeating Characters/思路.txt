@@ -1,25 +1,25 @@
-��Ŀ����������һ���ַ����������ҳ����в������ظ��ַ�����Ӵ��ĳ��ȡ�
+题目描述：给定一个字符串，请你找出其中不含有重复字符的最长子串的长度。
 
-�ʼ������Ŀ����ΪҪ��kmp�������������kmp�����ڱȽ������ַ����ķ�����
-�����˽⵽һ������ �����ڻ��������㷨����ʱ����Է���һ�¡�
+最开始看到题目，以为要用kmp，后面才想起来kmp是用在比较两个字符串的方法；
+后面了解到一个叫做 “窗口滑动”的算法，有时间可以分析一下。
 
-����˼·��
-��������ָ�루front��rear��ָ��ǰ�ж�����ַ���������һ��record_len��¼���ȣ�������жϵ�ǰ�ַ����в������ظ����ݣ����뵽ӳ���жϵķ���������һ��map������ʱ����ַ����е��ַ���<char,bool>�Ĺ�ϵ�洢����rear��ȡ������ȥmap��find���������ظ��������clear map�����´�front��ʼ���������������ظ������ʹ��һ��len��ǵ�ǰ������¼�Ĳ��ظ��ַ������ȣ��������ַ����󷵻�record_len
+解题思路：
+建立两个指针（front、rear）指向当前判断最长的字符串，设置一个record_len记录长度，题干是判断当前字符串中不存在重复内容，故想到映射判断的方法，建立一个map，将此时最长的字符串中的字符以<char,bool>的关系存储，用rear读取的内容去map中find，若出现重复的情况，clear map，重新从front开始遍历；若不出现重复情况，使用一个len标记当前遍历记录的不重复字符串长度；遍历完字符串后返回record_len
 
 2019.10.13 19.50
-ִ����ʱ :
+执行用时 :
 1668 ms
-�ڴ����� :
+内存消耗 :
 264.5 MB
 
-�Ż�˼·:
-�ʼ���жϷ���ʹrearҪ��front����ʼ�����жϣ����Ե���ʱ�仨�ѽ϶࣬��ʹ�ö���һ��len��Ϊ��ǰ���ȼ�¼������4���ֽڵĴ洢��������insert��clear mapҲ�����ڴ��ʱ��ķ����ӡ�
-�����뵽���õ�rear��ȡ��map���ظ���Ԫ��ʱ��ʹfront���Ƶ��ظ������Ԫ�أ����������erase��front���������ݣ���ʱ�Ͳ���ȥ����clear��insertԪ�أ���record_len��¼���������map.size()�����ֵ����󷵻�record_len���ɡ�
+优化思路:
+最开始的判断方法使rear要从front处开始重新判断，所以导致时间花费较多，且使用多了一个len作为当前长度记录，多了4个字节的存储，反复地insert和clear map也导致内存和时间耗费增加。
+现在想到采用当rear读取到map中重复的元素时，使front后移到重复的这个元素，这个过程中erase掉front经过的内容，此时就不用去反复clear、insert元素；用record_len记录这个过程中map.size()的最大值，最后返回record_len即可。
 
-2019.10.13 22.31 ��˼����ʱ20min��
-ִ����ʱ :
+2019.10.13 22.31 （思考用时20min）
+执行用时 :
 24 ms
-�ڴ����� :
+内存消耗 :
 12.3 MB
 
-��������ߣ�����ִ����ʱ���ڴ����ķ������кܴ�������ռ�
+有明显提高，但在执行用时和内存消耗方面仍有很大的提升空间
